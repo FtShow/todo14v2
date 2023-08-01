@@ -1,7 +1,5 @@
-import {v1} from 'uuid';
-import {todolistsAPI, TodolistType} from '../api/todolists-api'
-import {AppDispatchType} from "./store";
-
+import { v1 } from 'uuid';
+import { TodolistType } from '../api/todolists-api'
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST',
@@ -26,7 +24,6 @@ export type ChangeTodolistFilterActionType = {
 type ActionsType = RemoveTodolistActionType | AddTodolistActionType
     | ChangeTodolistTitleActionType
     | ChangeTodolistFilterActionType
-    | setTodosType
 
 const initialState: Array<TodolistDomainType> = [
     /*{id: todolistId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
@@ -68,9 +65,6 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
             }
             return [...state]
         }
-        case "SET-TODOS": {
-            return action.todos.map(el=>({...el, filter: 'all'}))
-        }
         default:
             return state;
     }
@@ -89,15 +83,3 @@ export const changeTodolistFilterAC = (id: string, filter: FilterValuesType): Ch
     return {type: 'CHANGE-TODOLIST-FILTER', id: id, filter: filter}
 }
 
-export type setTodosType = ReturnType<typeof setTodos>
-export const setTodos = (todos: TodolistType[]) => {
-    return {
-        type: 'SET-TODOS',
-        todos
-    } as const
-}
-
-export const getTodos = () => (dispatch: AppDispatchType)=>{
-    todolistsAPI.getTodolists()
-        .then((res)=>dispatch(setTodos(res.data)))
-}
